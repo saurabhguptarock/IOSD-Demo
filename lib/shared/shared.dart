@@ -208,6 +208,9 @@ class _TrendingPostsState extends State<TrendingPosts> {
 }
 
 class TopicComments extends StatefulWidget {
+  final bool isReply;
+
+  const TopicComments({Key key, this.isReply = false}) : super(key: key);
   @override
   _TopicCommentsState createState() => _TopicCommentsState();
 }
@@ -295,27 +298,38 @@ class _TopicCommentsState extends State<TopicComments> {
               ),
               Padding(
                 padding: EdgeInsets.only(left: 5, top: 5),
-                child: Text(
-                  '14d',
-                  style: GoogleFonts.lato(color: Colors.grey, fontSize: 12),
+                child: Row(
+                  children: [
+                    Text(
+                      '14 d',
+                      style: GoogleFonts.lato(color: Colors.grey, fontSize: 12),
+                    ),
+                    SizedBox(width: 10),
+                    if (widget.isReply)
+                      Icon(
+                        Icons.reply,
+                        color: Colors.grey,
+                      ),
+                  ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(left: 15),
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (ctx) => ThreadViewPage(),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    'View all 8 replies',
-                    style: GoogleFonts.lato(color: Colors.pink, fontSize: 16),
+              if (!widget.isReply)
+                Container(
+                  padding: EdgeInsets.only(left: 15),
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (ctx) => ThreadViewPage(),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'View all 8 replies',
+                      style: GoogleFonts.lato(color: Colors.pink, fontSize: 16),
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
           SizedBox(width: 10),
