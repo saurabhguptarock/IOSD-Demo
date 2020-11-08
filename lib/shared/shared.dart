@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iosd_demo/pages/thread_view.dart';
 import 'package:iosd_demo/pages/topic_comment.dart';
 
 class TrendingPosts extends StatefulWidget {
@@ -227,56 +228,95 @@ class _TopicCommentsState extends State<TopicComments> {
               'https://picsum.photos/id/1018/1000/600/',
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(10),
-            ),
-            padding: EdgeInsets.all(10),
-            width: MediaQuery.of(context).size.width * .7,
-            child: Stack(
-              overflow: Overflow.visible,
-              children: [
-                Text(
-                  'Esse Lorem aliqua cillum magna dolor ut adipisicing eu adipisicing officia aliqua. Labore dolore cupidatat duis amet minim quis ad amet consequat enim cupidatat eiusmod. Laboris nisi eu anim veniam est aute laborum. Quis dolore mollit nulla sunt irure magna irure irure. Amet anim ex non ex sit. Eu consectetur ipsum reprehenderit labore irure ea do commodo consectetur consequat elit cupidatat. Sunt quis Lorem culpa dolore duis proident dolore pariatur deserunt aliquip enim nostrud adipisicing. Adipisicing tempor cillum qui aliqua.',
-                  style: GoogleFonts.lato(),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                Positioned(
-                  bottom: -20,
-                  right: -20,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                padding: EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width * .7,
+                child: Stack(
+                  overflow: Overflow.visible,
+                  children: [
+                    Text(
+                      'Esse Lorem aliqua cillum magna dolor ut adipisicing eu adipisicing officia aliqua. Labore dolore cupidatat duis amet minim quis ad amet consequat enim cupidatat eiusmod. Laboris nisi eu anim veniam est aute laborum. Quis dolore mollit nulla sunt irure magna irure irure. Amet anim ex non ex sit. Eu consectetur ipsum reprehenderit labore irure ea do commodo consectetur consequat elit cupidatat. Sunt quis Lorem culpa dolore duis proident dolore pariatur deserunt aliquip enim nostrud adipisicing. Adipisicing tempor cillum qui aliqua.',
+                      style: GoogleFonts.lato(),
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      width: 40,
-                      height: 20,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.heart,
-                            size: 13,
-                          ),
-                          SizedBox(width: 5),
-                          Text(
-                            '5',
-                            style: GoogleFonts.lato(
-                              fontSize: 12,
+                    Positioned(
+                      bottom: -23,
+                      right: -25,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _likes += _isLiked ? -1 : 1;
+                              _isLiked = !_isLiked;
+                            });
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            width: 45,
+                            height: 20,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  _isLiked
+                                      ? FontAwesomeIcons.solidHeart
+                                      : FontAwesomeIcons.heart,
+                                  size: 13,
+                                  color: Colors.pink,
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  '$_likes',
+                                  style: GoogleFonts.lato(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 5, top: 5),
+                child: Text(
+                  '14d',
+                  style: GoogleFonts.lato(color: Colors.grey, fontSize: 12),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 15),
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (ctx) => ThreadViewPage(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    'View all 8 replies',
+                    style: GoogleFonts.lato(color: Colors.pink, fontSize: 16),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           SizedBox(width: 10),
         ],
