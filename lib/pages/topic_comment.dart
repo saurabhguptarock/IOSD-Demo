@@ -184,7 +184,7 @@ class _TopicCommentPageState extends State<TopicCommentPage> {
                           children: [
                             SizedBox(
                               height: MediaQuery.of(context).size.height * .33,
-                              child: Image.network(
+                              child: Image.asset(
                                 widget.img,
                                 fit: BoxFit.cover,
                               ),

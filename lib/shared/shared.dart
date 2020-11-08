@@ -32,7 +32,7 @@ class _TrendingPostsState extends State<TrendingPosts> {
             decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(widget.img),
+                image: AssetImage(widget.img),
               ),
             ),
             child: Center(
@@ -160,8 +160,8 @@ class _TrendingPostsState extends State<TrendingPosts> {
                   Positioned(
                     top: -20,
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        'https://picsum.photos/id/1018/1000/600/',
+                      backgroundImage: AssetImage(
+                        'assets/images/user.jpg',
                       ),
                     ),
                   ),
@@ -226,8 +226,8 @@ class _TopicCommentsState extends State<TopicComments> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           CircleAvatar(
-            backgroundImage: NetworkImage(
-              'https://picsum.photos/id/1018/1000/600/',
+            backgroundImage: AssetImage(
+              'assets/images/user.jpg',
             ),
           ),
           Column(

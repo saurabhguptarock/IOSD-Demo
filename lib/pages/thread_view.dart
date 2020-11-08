@@ -52,8 +52,8 @@ class _ThreadViewPageState extends State<ThreadViewPage> {
                     Padding(
                       padding: EdgeInsets.only(left: 20),
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          'https://picsum.photos/id/1018/1000/600/',
+                        backgroundImage: AssetImage(
+                          'assets/images/user.jpg',
                         ),
                       ),
                     ),
