@@ -160,16 +160,19 @@ class _ThreadViewPageState extends State<ThreadViewPage> {
                             ],
                           ),
                           InkWell(
-                            child: Icon(
-                              Icons.close,
-                              size: 30,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 5),
+                              child: Icon(
+                                Icons.close,
+                                size: 30,
+                              ),
                             ),
                             onTap: () => isReplying.reply(false),
                           )
                         ],
                       ),
                     ),
-                  SizedBox(height: 7),
+                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
