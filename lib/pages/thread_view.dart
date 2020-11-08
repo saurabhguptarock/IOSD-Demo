@@ -1,9 +1,10 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iosd_demo/shared/shared.dart';
+
+IsReplying isReplying = IsReplying();
 
 class ThreadViewPage extends StatefulWidget {
   @override
@@ -13,6 +14,14 @@ class ThreadViewPage extends StatefulWidget {
 class _ThreadViewPageState extends State<ThreadViewPage> {
   bool _isLiked = Random().nextBool();
   int _likes = Random().nextInt(10) + 1;
+
+  @override
+  void initState() {
+    isReplying.addListener(() {
+      setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +115,7 @@ class _ThreadViewPageState extends State<ThreadViewPage> {
             ),
           ),
           Positioned(
-            bottom: 62,
+            bottom: isReplying.isReplying ? 92 : 62,
             left: 0,
             right: 0,
             child: Divider(
@@ -119,50 +128,93 @@ class _ThreadViewPageState extends State<ThreadViewPage> {
             bottom: 0,
             right: 0,
             child: Container(
-              height: 70,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              color: Colors.white,
+              height: isReplying.isReplying ? 100 : 70,
+              child: Column(
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * .8,
-                    height: 37,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          top: -5,
-                          left: 0,
-                          right: 0,
-                          bottom: 0,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              contentPadding: EdgeInsets.all(10),
-                              hintText: 'Write a comment...',
-                              hintStyle: GoogleFonts.lato(),
-                            ),
-                            style: GoogleFonts.lato(
-                              decoration: TextDecoration.none,
-                              fontSize: 16,
-                            ),
+                  if (isReplying.isReplying)
+                    Container(
+                      padding: EdgeInsets.only(left: 15, right: 10),
+                      height: 30,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                '|',
+                                style: GoogleFonts.lato(
+                                  fontSize: 30,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 5),
+                                child: Text(
+                                  'Deserunt incididunt nisi id est ad...',
+                                  style: GoogleFonts.lato(
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
+                          InkWell(
+                            child: Icon(
+                              Icons.close,
+                              size: 30,
+                            ),
+                            onTap: () => isReplying.reply(false),
+                          )
+                        ],
+                      ),
+                    ),
+                  SizedBox(height: 7),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * .8,
+                        height: 37,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.send,
-                      color: Colors.grey,
-                    ),
-                    onPressed: () {},
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              top: -5,
+                              left: 0,
+                              right: 0,
+                              bottom: 0,
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintText: 'Write a reply...',
+                                  hintStyle: GoogleFonts.lato(),
+                                ),
+                                style: GoogleFonts.lato(
+                                  decoration: TextDecoration.none,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.send,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ],
                   ),
                 ],
               ),

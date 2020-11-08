@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -246,7 +245,9 @@ class _TopicCommentsState extends State<TopicComments> {
                   children: [
                     Container(
                       child: Text(
-                        'Esse Lorem aliqua cillum magna dolor ut adipisicing eu adipisicing officia aliqua. Labore dolore cupidatat duis amet minim quis ad amet consequat enim cupidatat eiusmod. Laboris nisi eu anim veniam est aute laborum. Quis dolore mollit nulla sunt irure magna irure irure. Amet anim ex non ex sit. Eu consectetur ipsum reprehenderit labore irure ea do commodo consectetur consequat elit cupidatat. Sunt quis Lorem culpa dolore duis proident dolore pariatur deserunt aliquip enim nostrud adipisicing. Adipisicing tempor cillum qui aliqua.',
+                        widget.isReply
+                            ? 'Deserunt elit ad quis ut enim proident amet elit sint. Incididunt aute quis ipsum sunt exercitation sunt veniam magna elit cupidatat. Aliqua sunt sit consectetur nisi non reprehenderit tempor. Ex elit incididunt officia nulla consequat cupidatat.'
+                            : 'Esse Lorem aliqua cillum magna dolor ut adipisicing eu adipisicing officia aliqua. Labore dolore cupidatat duis amet minim quis ad amet consequat enim cupidatat eiusmod. Laboris nisi eu anim veniam est aute laborum. Quis dolore mollit nulla sunt irure magna irure irure. Amet anim ex non ex sit. Eu consectetur ipsum reprehenderit labore irure ea do commodo consectetur consequat elit cupidatat. Sunt quis Lorem culpa dolore duis proident dolore pariatur deserunt aliquip enim nostrud adipisicing. Adipisicing tempor cillum qui aliqua.',
                         style: GoogleFonts.lato(),
                       ),
                     ),
@@ -318,7 +319,9 @@ class _TopicCommentsState extends State<TopicComments> {
                     SizedBox(width: 10),
                     if (widget.isReply)
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          isReplying.reply(true);
+                        },
                         child: Icon(
                           Icons.reply,
                           color: Colors.grey,
@@ -350,5 +353,16 @@ class _TopicCommentsState extends State<TopicComments> {
         ],
       ),
     );
+  }
+}
+
+class IsReplying with ChangeNotifier {
+  static bool _isReplying = false;
+
+  bool get isReplying => _isReplying;
+
+  void reply(bool res) {
+    _isReplying = res;
+    notifyListeners();
   }
 }
