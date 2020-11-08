@@ -22,7 +22,7 @@ class _TopicCommentPageState extends State<TopicCommentPage> {
   ScrollController _controller = ScrollController();
   bool _isLiked = false;
   Color _color = Colors.white;
-  int _likes = 0;
+  int _likes = 1;
 
   @override
   void initState() {

@@ -15,7 +15,7 @@ class TrendingPosts extends StatefulWidget {
 }
 
 class _TrendingPostsState extends State<TrendingPosts> {
-  int _likes = Random().nextInt(15);
+  int _likes = Random().nextInt(15) + 1;
   int _comments = Random().nextInt(10);
   bool _isLiked = Random().nextBool();
 
@@ -217,7 +217,7 @@ class TopicComments extends StatefulWidget {
 
 class _TopicCommentsState extends State<TopicComments> {
   bool _isLiked = Random().nextBool();
-  int _likes = Random().nextInt(10);
+  int _likes = Random().nextInt(10) + 1;
 
   @override
   Widget build(BuildContext context) {
@@ -244,31 +244,38 @@ class _TopicCommentsState extends State<TopicComments> {
                 child: Stack(
                   overflow: Overflow.visible,
                   children: [
-                    Text(
-                      'Esse Lorem aliqua cillum magna dolor ut adipisicing eu adipisicing officia aliqua. Labore dolore cupidatat duis amet minim quis ad amet consequat enim cupidatat eiusmod. Laboris nisi eu anim veniam est aute laborum. Quis dolore mollit nulla sunt irure magna irure irure. Amet anim ex non ex sit. Eu consectetur ipsum reprehenderit labore irure ea do commodo consectetur consequat elit cupidatat. Sunt quis Lorem culpa dolore duis proident dolore pariatur deserunt aliquip enim nostrud adipisicing. Adipisicing tempor cillum qui aliqua.',
-                      style: GoogleFonts.lato(),
+                    Container(
+                      child: Text(
+                        'Esse Lorem aliqua cillum magna dolor ut adipisicing eu adipisicing officia aliqua. Labore dolore cupidatat duis amet minim quis ad amet consequat enim cupidatat eiusmod. Laboris nisi eu anim veniam est aute laborum. Quis dolore mollit nulla sunt irure magna irure irure. Amet anim ex non ex sit. Eu consectetur ipsum reprehenderit labore irure ea do commodo consectetur consequat elit cupidatat. Sunt quis Lorem culpa dolore duis proident dolore pariatur deserunt aliquip enim nostrud adipisicing. Adipisicing tempor cillum qui aliqua.',
+                        style: GoogleFonts.lato(),
+                      ),
                     ),
                     Positioned(
                       bottom: -23,
                       right: -25,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _likes += _isLiked ? -1 : 1;
-                              _isLiked = !_isLiked;
-                            });
-                          },
+                      child: GestureDetector(
+                        onTap: () {
+                          print('object');
+                          setState(() {
+                            _likes += _isLiked ? -1 : 1;
+                            _isLiked = !_isLiked;
+                          });
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            width: 45,
-                            height: 20,
+                            width: widget.isReply
+                                ? !_isLiked
+                                    ? 53
+                                    : 45
+                                : 45,
+                            height: 23,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -282,7 +289,11 @@ class _TopicCommentsState extends State<TopicComments> {
                                 ),
                                 SizedBox(width: 5),
                                 Text(
-                                  '$_likes',
+                                  widget.isReply
+                                      ? _isLiked
+                                          ? '$_likes'
+                                          : 'Like'
+                                      : '$_likes',
                                   style: GoogleFonts.lato(
                                     fontSize: 12,
                                   ),
@@ -306,9 +317,12 @@ class _TopicCommentsState extends State<TopicComments> {
                     ),
                     SizedBox(width: 10),
                     if (widget.isReply)
-                      Icon(
-                        Icons.reply,
-                        color: Colors.grey,
+                      InkWell(
+                        onTap: () {},
+                        child: Icon(
+                          Icons.reply,
+                          color: Colors.grey,
+                        ),
                       ),
                   ],
                 ),

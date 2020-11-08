@@ -12,7 +12,7 @@ class ThreadViewPage extends StatefulWidget {
 
 class _ThreadViewPageState extends State<ThreadViewPage> {
   bool _isLiked = Random().nextBool();
-  int _likes = Random().nextInt(10);
+  int _likes = Random().nextInt(10) + 1;
 
   @override
   Widget build(BuildContext context) {
