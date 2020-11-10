@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iosd_demo/models/mode.dart';
 import 'package:iosd_demo/shared/shared.dart';
+import 'package:iosd_demo/services/service.dart';
 
 class TopicsPage extends StatefulWidget {
   @override
@@ -20,6 +22,18 @@ class _TopicsPageState extends State<TopicsPage> {
     'assets/images/8.jpg',
     'assets/images/9.jpg',
   ];
+
+  @override
+  void initState() {
+    createComment(
+      Comment(
+        message: 'asdsdad',
+        sentBy: 'oijasidfosifj',
+        date: DateTime.now(),
+      ),
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
