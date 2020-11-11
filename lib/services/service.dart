@@ -26,7 +26,7 @@ Future<List<Comment>> fetchComments() async {
 
 Future<Comment> createComment(Comment comment) async {
   Response res = await _client.post(
-    'http://f2c5228f38dc.ngrok.io/comments',
+    'http://f2c5228f38dc.ngrok.io/comments/add_comment',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -37,11 +37,16 @@ Future<Comment> createComment(Comment comment) async {
     }),
   );
 
-  var list = jsonDecode(res.body);
-  print(list);
-
-  // return list.map((data) => Comment(
-  //     date: data['date'], message: data['message'], sentBy: data['sentBy']));
+  var data = json.decode(res.body);
+  return Comment(
+    id: data['_id'],
+    date: data['date'],
+    message: data['message'],
+    sentBy: data['sentBy'],
+    likes: data['likes'],
+    replies: data['replies'],
+    thread: data['thread'],
+  );
 }
 
 Future<List<Comment>> fetchThreads(String id) async {

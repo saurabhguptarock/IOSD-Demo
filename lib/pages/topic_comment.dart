@@ -28,11 +28,28 @@ class _TopicCommentPageState extends State<TopicCommentPage> {
   Color _color = Colors.white;
   int _likes = 1;
   List<Comment> _comments = [];
+  String _message = '';
+  TextEditingController _textController = TextEditingController();
 
   Future<void> getComments() async {
     var comments = await fetchComments();
     setState(() {
       _comments = comments;
+    });
+  }
+
+  Future<void> sendComment() async {
+    Comment comment = await createComment(
+      Comment(
+        message: _message,
+        sentBy: 'asdads',
+        date: 'asfasfasfa afs',
+      ),
+    );
+    setState(() {
+      _textController.clear();
+      _message = '';
+      _comments.add(comment);
     });
   }
 
@@ -60,6 +77,7 @@ class _TopicCommentPageState extends State<TopicCommentPage> {
   @override
   void dispose() {
     _controller?.dispose();
+    _textController?.dispose();
     super.dispose();
   }
 
@@ -298,6 +316,7 @@ class _TopicCommentPageState extends State<TopicCommentPage> {
                           right: 0,
                           bottom: 0,
                           child: TextField(
+                            controller: _textController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -312,6 +331,11 @@ class _TopicCommentPageState extends State<TopicCommentPage> {
                               decoration: TextDecoration.none,
                               fontSize: 16,
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                _message = value;
+                              });
+                            },
                           ),
                         ),
                       ],
@@ -322,7 +346,7 @@ class _TopicCommentPageState extends State<TopicCommentPage> {
                       Icons.send,
                       color: Colors.grey,
                     ),
-                    onPressed: () {},
+                    onPressed: sendComment,
                   ),
                 ],
               ),
