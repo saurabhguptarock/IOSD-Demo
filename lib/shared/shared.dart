@@ -2,21 +2,36 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iosd_demo/models/mode.dart';
 import 'package:iosd_demo/pages/thread_view.dart';
 import 'package:iosd_demo/pages/topic_comment.dart';
 
 class TrendingPosts extends StatefulWidget {
   final String img;
+  final Comment comment;
 
-  const TrendingPosts({Key key, @required this.img}) : super(key: key);
+  const TrendingPosts({
+    Key key,
+    @required this.img,
+    @required this.comment,
+  }) : super(key: key);
   @override
   _TrendingPostsState createState() => _TrendingPostsState();
 }
 
 class _TrendingPostsState extends State<TrendingPosts> {
-  int _likes = Random().nextInt(15) + 1;
-  int _comments = Random().nextInt(10);
+  int _likes = 0;
+  int _comments = 0;
   bool _isLiked = Random().nextBool();
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _likes = widget.comment.likes;
+      _comments = widget.comment.replies;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +113,7 @@ class _TrendingPostsState extends State<TrendingPosts> {
                                 img: widget.img,
                                 likes: _likes,
                                 isLiked: _isLiked,
+                                comment: widget.comment,
                               ),
                             ),
                           );
@@ -134,7 +150,7 @@ class _TrendingPostsState extends State<TrendingPosts> {
                     children: [
                       SizedBox(height: 10),
                       Text(
-                        'Aute labore duis aliquip sit qui do nulla ea anim aute. Sit mollit et pariatur ut cupidatat occaecat ipsum in officia culpa tempor ex. Voluptate consequat officia reprehenderit cupidatat laboris Lorem adipisicing. Eu occaecat velit enim voluptate cupidatat. Consectetur consectetur ea sunt velit proident nostrud proident id. In cillum nisi culpa esse. Exercitation aliquip elit ex pariatur mollit cupidatat nisi consequat.',
+                        widget.comment.message,
                         maxLines: 4,
                         style: GoogleFonts.lato(),
                       ),
@@ -146,6 +162,7 @@ class _TrendingPostsState extends State<TrendingPosts> {
                                 img: widget.img,
                                 likes: _likes,
                                 isLiked: _isLiked,
+                                comment: widget.comment,
                               ),
                             ),
                           );
@@ -186,6 +203,7 @@ class _TrendingPostsState extends State<TrendingPosts> {
                         img: widget.img,
                         likes: _likes,
                         isLiked: _isLiked,
+                        comment: widget.comment,
                       ),
                     ),
                   );
@@ -208,8 +226,13 @@ class _TrendingPostsState extends State<TrendingPosts> {
 
 class TopicComments extends StatefulWidget {
   final bool isReply;
+  final Comment comment;
 
-  const TopicComments({Key key, this.isReply = false}) : super(key: key);
+  const TopicComments({
+    Key key,
+    this.isReply = false,
+    @required this.comment,
+  }) : super(key: key);
   @override
   _TopicCommentsState createState() => _TopicCommentsState();
 }
@@ -245,9 +268,7 @@ class _TopicCommentsState extends State<TopicComments> {
                   children: [
                     Container(
                       child: Text(
-                        widget.isReply
-                            ? 'Deserunt elit ad quis ut enim proident amet elit sint. Incididunt aute quis ipsum sunt exercitation sunt veniam magna elit cupidatat. Aliqua sunt sit consectetur nisi non reprehenderit tempor. Ex elit incididunt officia nulla consequat cupidatat.'
-                            : 'Esse Lorem aliqua cillum magna dolor ut adipisicing eu adipisicing officia aliqua. Labore dolore cupidatat duis amet minim quis ad amet consequat enim cupidatat eiusmod. Laboris nisi eu anim veniam est aute laborum. Quis dolore mollit nulla sunt irure magna irure irure. Amet anim ex non ex sit. Eu consectetur ipsum reprehenderit labore irure ea do commodo consectetur consequat elit cupidatat. Sunt quis Lorem culpa dolore duis proident dolore pariatur deserunt aliquip enim nostrud adipisicing. Adipisicing tempor cillum qui aliqua.',
+                        widget.comment.message,
                         style: GoogleFonts.lato(),
                       ),
                     ),
@@ -337,7 +358,9 @@ class _TopicCommentsState extends State<TopicComments> {
                     onPressed: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (ctx) => ThreadViewPage(),
+                          builder: (ctx) => ThreadViewPage(
+                            comment: widget.comment,
+                          ),
                         ),
                       );
                     },

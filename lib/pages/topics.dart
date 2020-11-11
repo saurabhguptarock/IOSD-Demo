@@ -22,16 +22,18 @@ class _TopicsPageState extends State<TopicsPage> {
     'assets/images/8.jpg',
     'assets/images/9.jpg',
   ];
+  List<Comment> _comments = [];
+
+  Future<void> getComments() async {
+    var comments = await fetchComments();
+    setState(() {
+      _comments = comments;
+    });
+  }
 
   @override
   void initState() {
-    createComment(
-      Comment(
-        message: 'asdsdad',
-        sentBy: 'oijasidfosifj',
-        date: DateTime.now(),
-      ),
-    );
+    getComments();
     super.initState();
   }
 
@@ -86,9 +88,10 @@ class _TopicsPageState extends State<TopicsPage> {
                           ),
                         ),
                       ),
-                      for (var i = 0; i < _images.length; i++) ...[
+                      for (var i = 0; i < _comments.length; i++) ...[
                         TrendingPosts(
                           img: _images[i],
+                          comment: _comments[i],
                         ),
                         SizedBox(height: 7),
                       ],

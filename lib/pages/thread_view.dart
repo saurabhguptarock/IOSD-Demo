@@ -2,11 +2,17 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iosd_demo/models/mode.dart';
 import 'package:iosd_demo/shared/shared.dart';
+import 'package:iosd_demo/services/service.dart';
 
 IsReplying isReplying = IsReplying();
 
 class ThreadViewPage extends StatefulWidget {
+  final Comment comment;
+
+  const ThreadViewPage({Key key, @required this.comment}) : super(key: key);
+
   @override
   _ThreadViewPageState createState() => _ThreadViewPageState();
 }
@@ -14,12 +20,39 @@ class ThreadViewPage extends StatefulWidget {
 class _ThreadViewPageState extends State<ThreadViewPage> {
   bool _isLiked = Random().nextBool();
   int _likes = Random().nextInt(10) + 1;
+  List<Comment> _threads = [];
+  String _message = '';
+  TextEditingController _controller = TextEditingController();
+
+  Future<void> getThreadComments() async {
+    List<Comment> threads = await fetchThreads(widget.comment.id);
+    setState(() {
+      _threads = threads;
+    });
+  }
+
+  Future<void> addThreadComments() async {
+    Comment thread = await addThread(
+        Comment(
+          message: _message,
+          sentBy: 'asdasdasdad',
+          date: '1 d',
+        ),
+        widget.comment.id);
+
+    setState(() {
+      _controller.clear();
+      _message = '';
+      _threads.add(thread);
+    });
+  }
 
   @override
   void initState() {
     isReplying.addListener(() {
       setState(() {});
     });
+    getThreadComments();
     super.initState();
   }
 
@@ -60,7 +93,7 @@ class _ThreadViewPageState extends State<ThreadViewPage> {
                     Padding(
                       padding: EdgeInsets.only(left: 15, right: 15, top: 7),
                       child: Text(
-                        'Lorem culpa duis sint occaecat in reprehenderit reprehenderit excepteur cupidatat do tempor aute ullamco incididunt. In aliqua magna ut culpa eu velit sunt ad eiusmod. Reprehenderit aute occaecat eiusmod excepteur aliqua ad duis dolor tempor veniam aliqua. Qui veniam pariatur eu veniam ut mollit quis deserunt consequat fugiat adipisicing. Incididunt ea non reprehenderit magna laboris consectetur culpa duis pariatur laboris deserunt in tempor dolor. Veniam proident non et ea. Nisi duis do esse amet amet sunt esse velit. Non voluptate esse qui nostrud id magna velit. Sunt ea ullamco consequat irure ea fugiat amet sunt. Excepteur elit non proident consectetur exercitation laboris.',
+                        widget.comment.message,
                         style: GoogleFonts.lato(height: 1.4, fontSize: 16),
                       ),
                     ),
@@ -104,9 +137,12 @@ class _ThreadViewPageState extends State<ThreadViewPage> {
                       height: 10,
                       color: Colors.grey[200],
                     ),
-                    for (var i = 0; i < 10; i++) ...[
+                    for (var i = 0; i < _threads.length; i++) ...[
                       if (i == 0) SizedBox(height: 10),
-                      TopicComments(isReply: true),
+                      TopicComments(
+                        isReply: true,
+                        comment: _threads[i],
+                      ),
                       SizedBox(height: 15),
                     ],
                   ],
@@ -191,6 +227,7 @@ class _ThreadViewPageState extends State<ThreadViewPage> {
                               right: 0,
                               bottom: 0,
                               child: TextField(
+                                controller: _controller,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   focusedBorder: InputBorder.none,
@@ -205,6 +242,11 @@ class _ThreadViewPageState extends State<ThreadViewPage> {
                                   decoration: TextDecoration.none,
                                   fontSize: 16,
                                 ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _message = value;
+                                  });
+                                },
                               ),
                             ),
                           ],
@@ -215,7 +257,7 @@ class _ThreadViewPageState extends State<ThreadViewPage> {
                           Icons.send,
                           color: Colors.grey,
                         ),
-                        onPressed: () {},
+                        onPressed: addThreadComments,
                       ),
                     ],
                   ),

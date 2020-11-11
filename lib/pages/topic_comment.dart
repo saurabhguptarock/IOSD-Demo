@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iosd_demo/models/mode.dart';
+import 'package:iosd_demo/services/service.dart';
 import 'package:iosd_demo/shared/shared.dart';
 
 class TopicCommentPage extends StatefulWidget {
   final String img;
   final bool isLiked;
   final int likes;
+  final Comment comment;
 
   const TopicCommentPage({
     Key key,
     @required this.isLiked,
     @required this.likes,
     @required this.img,
+    @required this.comment,
   }) : super(key: key);
   @override
   _TopicCommentPageState createState() => _TopicCommentPageState();
@@ -23,10 +27,19 @@ class _TopicCommentPageState extends State<TopicCommentPage> {
   bool _isLiked = false;
   Color _color = Colors.white;
   int _likes = 1;
+  List<Comment> _comments = [];
+
+  Future<void> getComments() async {
+    var comments = await fetchComments();
+    setState(() {
+      _comments = comments;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    getComments();
     setState(() {
       _isLiked = widget.isLiked;
       _likes = widget.likes;
@@ -238,9 +251,11 @@ class _TopicCommentPageState extends State<TopicCommentPage> {
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [
-                        for (var i = 0; i < 10; i++) ...[
+                        for (var i = 0; i < _comments.length; i++) ...[
                           if (i == 0) SizedBox(height: 10),
-                          TopicComments(),
+                          TopicComments(
+                            comment: _comments[i],
+                          ),
                           SizedBox(height: 15),
                         ],
                       ],
