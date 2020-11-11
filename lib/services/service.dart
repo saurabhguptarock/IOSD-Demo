@@ -5,7 +5,7 @@ import 'package:iosd_demo/models/mode.dart';
 Client _client = Client();
 
 Future<List<Comment>> fetchComments() async {
-  Response res = await _client.get('http://f2c5228f38dc.ngrok.io/comments/1');
+  Response res = await _client.get('https://iosd-backend.herokuapp.com/comments/1');
 
   List list = json.decode(res.body);
 
@@ -26,7 +26,7 @@ Future<List<Comment>> fetchComments() async {
 
 Future<Comment> createComment(Comment comment) async {
   Response res = await _client.post(
-    'http://f2c5228f38dc.ngrok.io/comments/add_comment',
+    'https://iosd-backend.herokuapp.com/comments/add_comment',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -51,7 +51,7 @@ Future<Comment> createComment(Comment comment) async {
 
 Future<List<Comment>> fetchThreads(String id) async {
   Response res =
-      await _client.get('http://f2c5228f38dc.ngrok.io/comments/threads/$id/1');
+      await _client.get('https://iosd-backend.herokuapp.com/comments/threads/$id/1');
 
   List list = json.decode(res.body);
 
@@ -72,7 +72,7 @@ Future<List<Comment>> fetchThreads(String id) async {
 
 Future<Comment> addThread(Comment comment, String id) async {
   Response res = await _client.post(
-    'http://f2c5228f38dc.ngrok.io/comments/threads',
+    'https://iosd-backend.herokuapp.com/comments/threads',
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
